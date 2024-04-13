@@ -1,0 +1,26 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+
+  .logo-container {
+    margin-bottom: 20px;
+  }
+
+  .auth-buttons {
+    margin-top: 30px;
+    width: 100%;
+
+    ion-button {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+ion-img {
+  max-width: 150px;
+  height: auto;
+}

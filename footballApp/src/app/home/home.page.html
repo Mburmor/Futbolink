@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="welcome-container">
+    <!-- Logo centrado -->
+    <div class="logo-container" style="text-align: center;">
+      <ion-img src="../../assets/53283.png" style="max-width: 200px; height: auto;"></ion-img>
+    </div>
+
+    <!-- Título y subtítulo -->
+    <h2 style="text-align: center;">Bienvenido a FutboLink</h2>
+    <p style="text-align: center;">La mejor manera de organizar tus partidos de fútbol</p>
+
+    <!-- Botones centrados -->
+    <div class="auth-buttons" style="text-align: center;">
+      <ion-button expand="block" color="success" [routerLink]="'/register'">
+        <ion-icon slot="start" name="person-add-outline"></ion-icon>
+        Registrarse
+      </ion-button>
+      <ion-button expand="block" color="primary" [routerLink]="'/login'">
+        <ion-icon slot="start" name="log-in-outline"></ion-icon>
+        Iniciar Sesión
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

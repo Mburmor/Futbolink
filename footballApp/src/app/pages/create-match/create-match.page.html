@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/menu" color="light">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Crear Partido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onCreateMatch()">
+    <ion-item>
+      <ion-label position="floating">Ubicación</ion-label>
+      <ion-input type="text" [(ngModel)]="newMatch.location" name="location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Día</ion-label>
+      <ion-select [(ngModel)]="day" name="day">
+        <ion-select-option *ngFor="let day of days" [value]="day">{{ day }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Mes</ion-label>
+      <ion-select [(ngModel)]="month" name="month">
+        <ion-select-option *ngFor="let month of months" [value]="month">{{ month }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Hora</ion-label>
+      <ion-select [(ngModel)]="hour" name="hour">
+        <ion-select-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Minuto</ion-label>
+      <ion-select [(ngModel)]="minute" name="minute">
+        <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Tipo de Partido</ion-label>
+      <ion-select [(ngModel)]="newMatch.type" name="type">
+        <ion-select-option value="5v5">Fútbol Sala (5v5)</ion-select-option>
+        <ion-select-option value="7v7">Fútbol 7 (7v7)</ion-select-option>
+        <ion-select-option value="11v11">Fútbol 11 (11v11)</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="block" color="success" type="submit">Crear Partido</ion-button>
+
+    <ion-item *ngIf="errorMessage" color="danger">
+      <ion-label>{{ errorMessage }}</ion-label>
+    </ion-item>
+  </form>
+</ion-content>
