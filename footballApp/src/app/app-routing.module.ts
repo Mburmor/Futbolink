@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'fotografias',
     loadChildren: () => import('./fotografias/fotografias.module').then( m => m.FotografiasPageModule)
   },
+  {
+    path: 'tactibot',
+    loadChildren: () => import('./pages/tactibot/tactibot-routing.module').then( m => m.TactiBotRoutingModule)
+  }
 
 ];
 
