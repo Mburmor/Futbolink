@@ -5,7 +5,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -13,13 +12,13 @@ import { environment } from '../environments/environment';
 
 import { MatchDetailsComponent } from './match-details/match-details.component';
 import { PlayerListModule } from './player-list/player-list.module';
-
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     MatchDetailsComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -29,7 +28,9 @@ import { PlayerListModule } from './player-list/player-list.module';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    PlayerListModule
+    PlayerListModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

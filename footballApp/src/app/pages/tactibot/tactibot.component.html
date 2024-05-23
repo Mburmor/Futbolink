@@ -1,3 +1,7 @@
-<p>
-  tactibot works!
-</p>
+<div class="input-group">
+  <input type="text" [(ngModel)]="userInput" placeholder="Escribe tu pregunta aquí..." class="input-text">
+  <button ion-button (click)="sendMessage()" class="send-button">Enviar</button>
+</div>
+<div class="response-area">
+  {{ responseText }}
+</div>
