@@ -15,7 +15,7 @@ export class Gpt3Service {
   getResponse(prompt: string): Observable<GPT3Response> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer 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`
+     /* 'Authorization': `Bearer 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`*/
     });
 
     const body = {

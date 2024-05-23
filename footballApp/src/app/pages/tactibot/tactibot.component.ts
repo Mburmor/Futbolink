@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GPT3Response } from '../../models/gpt3-response';
 import { Gpt3Service } from 'src/app/services/gpt3.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tactibot',
