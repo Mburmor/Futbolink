@@ -2,20 +2,19 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Observable, Subscription } from 'rxjs';
 import { MatchService } from '../../services/match.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { Match } from '../../models/match.models';
 import { MatchDetailsComponent } from '../../match-details/match-details.component';
 import { PlayerService } from 'src/app/services/player.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-
 @Component({
   selector: 'app-match-list',
   templateUrl: './match-list.page.html',
   styleUrls: ['./match-list.page.scss'],
 })
-export class MatchListPage implements OnInit {
+export class MatchListPage implements OnInit, OnDestroy {
   public matches$!: Observable<Match[]>;
   public allMatches: Match[] = [];
   public filteredMatches: Match[] = [];
@@ -27,7 +26,7 @@ export class MatchListPage implements OnInit {
     private matchService: MatchService,
     public modalController: ModalController,
     private playerService: PlayerService,
-    private authService: AuthService,
+    private authService: AuthenticationService, // Asegúrate de que el servicio se importe correctamente
   ) {}
 
   ngOnInit() {
@@ -64,7 +63,6 @@ export class MatchListPage implements OnInit {
 
     this.playerService.joinMatch(matchId, userId).then(() => {
       console.log(`${userName} se ha unido al partido ${matchId}`);
-
     }).catch(error => {
       console.error('Error al unirse al partido:', error);
     });
@@ -83,6 +81,6 @@ export class MatchListPage implements OnInit {
   }
 
   getCurrentUserId(): string {
-    return 'default-user-id';
+    return this.authService.getCurrentUserId();
   }
 }

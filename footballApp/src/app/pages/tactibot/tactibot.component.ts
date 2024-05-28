@@ -1,36 +1,35 @@
 import { Component } from '@angular/core';
-import { GPT3Response } from '../../models/gpt3-response';
 import { Gpt3Service } from 'src/app/services/gpt3.service';
-import { FormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';  // Importa FormControl
 
 @Component({
   selector: 'app-tactibot',
   templateUrl: './tactibot.component.html',
-  styleUrls: ['./tactibot.component.scss'],
-
+  styleUrls: ['./tactibot.component.scss']
 })
 export class TactibotComponent {
-  userInput = '';
+  userInput = new FormControl(''); // Usa FormControl aquí
   responseText = '';  // Almacenar la respuesta de GPT-3
 
   constructor(private gpt3Service: Gpt3Service) {}
 
   sendMessage() {
-    if (this.userInput) {
-      this.gpt3Service.getResponse(this.userInput).subscribe(
-        (response: GPT3Response) => {
+    const input = this.userInput.value; // Usa el valor de FormControl
+    if (input) {
+      this.gpt3Service.getResponse(input).subscribe(
+        response => {
           if (response && response.choices.length > 0) {
             this.responseText = response.choices[0].text;
           } else {
             this.responseText = "No se recibió una respuesta válida.";
           }
         },
-        (error: any) => {  // Aquí especificamos que error es de tipo 'any'
+        error => {
           console.error("Error calling GPT-3:", error);
           this.responseText = "Hubo un error al procesar tu solicitud.";
         }
       );
-      this.userInput = ''; // Limpia el input después de enviar
+      this.userInput.setValue(''); // Limpia el FormControl después de enviar
     }
   }
-}  
+}

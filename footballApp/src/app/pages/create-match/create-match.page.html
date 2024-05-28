@@ -2,7 +2,7 @@
   <ion-toolbar color="success">
     <ion-buttons slot="start">
       <ion-button routerLink="/menu" color="light">
-        <ion-icon name="home-outline"></ion-icon>
+        <ion-icon name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Crear Partido</ion-title>
@@ -17,31 +17,13 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Día</ion-label>
-      <ion-select [(ngModel)]="day" name="day">
-        <ion-select-option *ngFor="let day of days" [value]="day">{{ day }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Mes</ion-label>
-      <ion-select [(ngModel)]="month" name="month">
-        <ion-select-option *ngFor="let month of months" [value]="month">{{ month }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Hora</ion-label>
-      <ion-select [(ngModel)]="hour" name="hour">
-        <ion-select-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>Minuto</ion-label>
-      <ion-select [(ngModel)]="minute" name="minute">
-        <ion-select-option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</ion-select-option>
-      </ion-select>
+      <ion-label>Fecha y Hora</ion-label>
+      <ion-datetime 
+        display-format="D MMM YYYY H:mm" 
+        picker-format="D MMM YYYY H:mm" 
+        [(ngModel)]="newMatch.time" 
+        name="datetime">
+      </ion-datetime>
     </ion-item>
 
     <ion-item>

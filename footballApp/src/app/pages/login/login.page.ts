@@ -15,10 +15,8 @@ export class LoginPage {
   async onLogin() {
     this.errorMessage = '';
     try {
-      const result = await this.authService.login(this.user.email, this.user.password);
-      if (result) {
-        console.log('Inicio de sesión exitoso', result);
-      }
+      await this.authService.login(this.user.email, this.user.password);
+      console.log('Inicio de sesión exitoso');
     } catch (error: any) {
       switch (error.code) {
         case 'auth/wrong-password':
@@ -33,4 +31,15 @@ export class LoginPage {
       }
     }
   }
-}  
+
+  async onLoginWithGoogle() {
+    this.errorMessage = ''; // Limpiar mensaje de error anterior
+    try {
+      await this.authService.loginWithGoogle();
+      console.log('Inicio de sesión con Google exitoso');
+    } catch (error) {
+      this.errorMessage = 'Error en el inicio de sesión con Google. Intente nuevamente.';
+      console.error('Error en el inicio de sesión con Google', error);
+    }
+  }
+}

@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
 import { MatchDetailsComponent } from './match-details/match-details.component';
 import { PlayerListModule } from './player-list/player-list.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularFirestoreModule,
     PlayerListModule,
     HttpClientModule,
-    ReactiveFormsModule
+    FormsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
@@ -38,3 +38,4 @@ import { ReactiveFormsModule } from '@angular/forms';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+

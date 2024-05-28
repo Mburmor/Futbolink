@@ -22,7 +22,6 @@
       <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
     </ion-item>
     
-    
     <ion-item>
       <ion-label position="floating">Contraseña</ion-label>
       <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
@@ -47,6 +46,6 @@
   </form>
 
   <ion-button expand="block" routerLink="/login">Ya tengo una cuenta</ion-button>
+  <ion-button expand="block" (click)="onGoogleRegister()">Registrarse con Google</ion-button>
 
 </ion-content>
-

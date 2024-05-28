@@ -8,14 +8,14 @@ import { GPT3Response } from '../models/gpt3-response'; // Asegúrate de que la 
   providedIn: 'root'
 })
 export class Gpt3Service {
-  private baseURL = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+  private baseURL = 'https://api.openai.com/v1/engines/davinci/completions';
 
   constructor(private http: HttpClient) {}
 
   getResponse(prompt: string): Observable<GPT3Response> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-     /* 'Authorization': `Bearer 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`*/
+      'Authorization': `Bearer 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`
     });
 
     const body = {

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Match } from '../models/match.models';
-import { PlayerService } from '../services/player.service';
-import { ModalController } from '@ionic/angular';
-import { MatchDetailsComponent } from '../match-details/match-details.component';
 import { MatchService } from '../services/match.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -12,41 +12,68 @@ import { MatchService } from '../services/match.service';
 })
 export class PlayerListComponent implements OnInit {
   @Input() match?: Match;
-
+  players$: Observable<any[]> = of([]);
   @Output() updateMatch = new EventEmitter<void>();
 
   constructor(
-      private playerService: PlayerService, 
-      public modalController: ModalController
-        
-    ) {}
+    private matchService: MatchService,
+    private authService: AuthenticationService
+  ) {}
 
-  ngOnInit(): void {}
-
-  joinMatch() {
+  ngOnInit(): void {
     if (this.match?.id) {
-      // Aquí debes reemplazar 'current-user-id' con el id real del usuario que se está uniendo
-      this.playerService.joinMatch(this.match.id, 'current-user-id')
-        .then(() => {
-          alert('Te has unido al partido exitosamente!');
-          this.updateMatch.emit();
+      this.players$ = this.matchService.getPlayersInMatch(this.match.id).pipe(
+        catchError(err => {
+          console.error('Error al obtener jugadores', err);
+          return of([]);
         })
-        .catch(error => console.error('Error al unirse al partido:', error));
+      );
     }
   }
 
-  openMatchDetails(matchId: string) {
-    this.modalController.create({
-      component: MatchDetailsComponent,
-      componentProps: { matchId: matchId }
-    }).then(modal => {
-      modal.present();
-      return modal.onDidDismiss();
-    }).then(result => {
-      if (result.role === 'updateNeeded') {
-        // Aquí podrías recargar los datos necesarios o manejar la post-unión
-      }
-    });
+  joinMatch() {
+    if (this.match?.id) {
+      this.authService.currentUser.subscribe(currentUser => {
+        const userId = currentUser?.uid;
+
+        if (userId && this.match?.id) {
+          this.matchService.joinMatch(this.match.id, userId)
+            .then(() => {
+              this.updateMatch.emit();
+              this.ngOnInit();  // Refresh player list
+            })
+            .catch(error => {
+              console.error('Error al unirse al partido:', error);
+            });
+        } else {
+          console.error('Usuario no autenticado o partido no definido');
+        }
+      });
+    } else {
+      console.error('Partido no definido');
+    }
   }
-  
+
+  leaveMatch() {
+    if (this.match?.id) {
+      this.authService.currentUser.subscribe(currentUser => {
+        const userId = currentUser?.uid;
+
+        if (userId && this.match?.id) {
+          this.matchService.leaveMatch(this.match.id, userId)
+            .then(() => {
+              this.updateMatch.emit();
+              this.ngOnInit();  // Refresh player list
+            })
+            .catch(error => {
+              console.error('Error al borrarse del partido:', error);
+            });
+        } else {
+          console.error('Usuario no autenticado o partido no definido');
+        }
+      });
+    } else {
+      console.error('Partido no definido');
+    }
+  }
 }

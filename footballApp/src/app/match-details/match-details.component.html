@@ -30,12 +30,7 @@
           <ion-note slot="end">{{ match.type }}</ion-note>
         </ion-item>
       </ion-list>
+      <app-player-list [match]="match" (updateMatch)="handlePlayerJoined()"></app-player-list>
     </ion-card-content>
   </ion-card>
-
-  <ion-button expand="block" (click)="joinMatch()" color="success">
-    Apuntarse
-  </ion-button>
-  <app-player-list *ngIf="match" [match]="match" (playerJoined)="handlePlayerJoined()"></app-player-list>
-  
 </ion-content>

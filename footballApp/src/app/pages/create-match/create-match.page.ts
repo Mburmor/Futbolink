@@ -9,15 +9,7 @@ import { Match } from '../../models/match.models';
   styleUrls: ['./create-match.page.scss'],
 })
 export class CreateMatchPage {
-  day: string = '';
-  month: string = '';
-  hour: string = '';
-  minute: string = '';
   errorMessage: string = '';
-  days = Array.from({ length: 31 }, (_, i) => i + 1);
-  months = Array.from({ length: 12 }, (_, i) => i + 1);
-  hours = Array.from({ length: 24 }, (_, i) => (i < 10 ? `0${i}` : `${i}`));
-  minutes = ['00', '15', '30', '45'];
 
   newMatch: Match = {
     id: this.generateUniqueId(),
@@ -33,21 +25,17 @@ export class CreateMatchPage {
   ) {}
 
   onCreateMatch() {
-
-    if (!this.day || !this.month || !this.hour || !this.minute || !this.newMatch.location || !this.newMatch.type) {
+    if (!this.newMatch.location || !this.newMatch.time || !this.newMatch.type) {
       this.errorMessage = 'Por favor, rellena todos los campos antes de crear el partido.';
       return;
     }
 
-
-    const matchDate = new Date();
-    matchDate.setDate(parseInt(this.day));
-    matchDate.setMonth(parseInt(this.month) - 1);
-    matchDate.setHours(parseInt(this.hour), parseInt(this.minute));
-    this.newMatch.time = matchDate;
+    // Convertir el valor de tiempo a un objeto Date si es una cadena
+    if (typeof this.newMatch.time === 'string') {
+      this.newMatch.time = new Date(this.newMatch.time);
+    }
 
     this.matchService.createMatch(this.newMatch).then(() => {
-
       this.errorMessage = '';
       this.router.navigateByUrl('/match-list');
     }).catch(error => {

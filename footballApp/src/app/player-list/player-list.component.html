@@ -1,5 +1,14 @@
 <ion-list>
   <ion-list-header>Jugadores Apuntados</ion-list-header>
-  <ion-item *ngFor="let playerId of match?.players">{{ playerId }}</ion-item>
+  <ion-item *ngFor="let player of players$ | async">
+    {{ player.nombre }} {{ player.apellidos }}
+  </ion-item>
 </ion-list>
 
+<ion-button expand="block" (click)="joinMatch()" color="success">
+  Apuntarse
+</ion-button>
+
+<ion-button expand="block" (click)="leaveMatch()" color="danger">
+  Borrarse
+</ion-button>

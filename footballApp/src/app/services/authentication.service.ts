@@ -2,31 +2,42 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { GoogleAuthProvider } from 'firebase/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private userSubject = new BehaviorSubject<any>(null);
+  public currentUser = this.userSubject.asObservable();
 
   constructor(
     private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
+    private firestore: AngularFirestore,
     private router: Router
   ) {}
 
-  async register(email: string, password: string) {
+  async loginWithGoogle() {
     try {
-      const result = await this.afAuth.createUserWithEmailAndPassword(email, password);
-      if (result.user) {
-        const newUser = {
-          uid: result.user.uid,
-          email: result.user.email
+      const result = await this.afAuth.signInWithPopup(new GoogleAuthProvider());
+      const user = result.user;
 
+      if (user) {
+        const newUser = {
+          email: user.email,
+          nombre: user.displayName?.split(' ')[0] || '',
+          apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
+          edad: '',
+          uid: user.uid
         };
-        await this.afs.collection('usuarios').doc(result.user.uid).set(newUser);
+
+        await this.firestore.collection('users').doc(user.uid).set(newUser, { merge: true });
+        this.userSubject.next(newUser); // Actualiza el BehaviorSubject con el usuario actual
+        this.router.navigate(['/menu']);
       }
-      return result;
     } catch (error) {
+      console.error('Error en el inicio de sesión con Google', error);
       throw error;
     }
   }
@@ -34,9 +45,12 @@ export class AuthenticationService {
   async login(email: string, password: string) {
     try {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.router.navigateByUrl('/menu');
-      return result;
+      const userDoc = await this.firestore.collection('users').doc(result.user?.uid).ref.get();
+      const userData = userDoc.data();
+      this.userSubject.next(userData); // Actualiza el BehaviorSubject con el usuario actual
+      this.router.navigate(['/menu']);
     } catch (error) {
+      console.error('Error en el inicio de sesión', error);
       throw error;
     }
   }
@@ -44,11 +58,19 @@ export class AuthenticationService {
   async logout() {
     try {
       await this.afAuth.signOut();
-      this.router.navigateByUrl('/login');
+      this.userSubject.next(null); // Resetea el BehaviorSubject
+      this.router.navigate(['/login']);
     } catch (error) {
-      throw error;
+      console.error('Error en el cierre de sesión', error);
     }
   }
 
-  // Puedes añadir más métodos según lo que necesites, como reset de contraseña, etc.
+  getCurrentUserId(): string {
+    return this.userSubject.value?.uid || 'default-user-id';
+  }
+
+  getCurrentUserName(): string {
+    const user = this.userSubject.value;
+    return user ? `${user.nombre} ${user.apellidos}` : 'Usuario';
+  }
 }

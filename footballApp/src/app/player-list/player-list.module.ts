@@ -6,6 +6,6 @@ import { PlayerListComponent } from './player-list.component';
 @NgModule({
   declarations: [PlayerListComponent],
   imports: [CommonModule, IonicModule],
-  exports: [PlayerListComponent] // Asegúrate de exportar el PlayerListComponent
+  exports: [PlayerListComponent]
 })
 export class PlayerListModule {}
