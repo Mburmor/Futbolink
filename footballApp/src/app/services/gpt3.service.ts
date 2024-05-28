@@ -2,7 +2,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GPT3Response } from '../models/gpt3-response'; // Asegúrate de que la ruta de importación es correcta
+import { GPT3Response } from '../models/gpt3-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class Gpt3Service {
   getResponse(prompt: string): Observable<GPT3Response> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer API-KEY`
+      //Aqui falta eso
     });
 
     const body = {
